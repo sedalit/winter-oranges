@@ -1,0 +1,4 @@
+RhythmosEditor - Configuration
+
+LastRhythmosDatabaseFile: C:/Users/Sedalit/Desktop/джем/Проект/Winter Oranges/winter-oranges/Assets/RhythmosDatabase.xml
+MetronomeSound: Assets/Assets/SFX/сердцебиение_луп.wav
