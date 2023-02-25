@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc98757dfa4983f4087f79e49a6f020f, type: 3}
   m_Name: New Destroy After Collision
   m_EditorClassIdentifier: 
-  timeToDestroy: 5
+  scaleDecreaseTime: 0.5

@@ -7,12 +7,12 @@ public class CharacterFacingController : MonoBehaviour
 
     private void OnEnable()
     {
-        mover.DirectionChanged += OnDirectionChanged;
+        //mover.DirectionChanged += OnDirectionChanged;
     }
 
     private void OnDisable()
     {
-        mover.DirectionChanged -= OnDirectionChanged;
+        //mover.DirectionChanged -= OnDirectionChanged;
     }
 
     private void Update()
