@@ -5,8 +5,18 @@ public class CharacterFacingController : MonoBehaviour
     [SerializeField] private Mover mover;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
-    private void Update()
+    private void OnEnable()
     {
-        spriteRenderer.flipX = mover.LastDirectionX < 0;
+        mover.DirectionChanged += OnDirectionChanged;
+    }
+
+    private void OnDisable()
+    {
+        mover.DirectionChanged -= OnDirectionChanged;
+    }
+
+    private void OnDirectionChanged(float lastDirection, float currentDirection)
+    {
+        spriteRenderer.flipX = currentDirection < lastDirection;
     }
 }
