@@ -8,7 +8,7 @@ public class UIMoveButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        targetMover.DirectionControl = direction;
+        targetMover.DirectionControl = new Vector2(direction.x, targetMover.transform.position.y);
         //targetMover.MovePosition = Vector2.zero;
         //targetMover.NormalizedDirectionX = direction.normalized.x;
     }

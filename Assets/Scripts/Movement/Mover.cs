@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -6,8 +7,7 @@ public class Mover : MonoBehaviour
     public event UnityAction<float, float> DirectionChanged;
 
     public Vector2 DirectionControl { get; set; }
-    public Vector2 MovePosition { get; set; }
-    public Vector2 TeleportPosition { get; set; }
+    public ActionTeleport ActiveTeleport { get; set; }
     public float NormalizedDirectionX { 
         get
         {
@@ -26,32 +26,31 @@ public class Mover : MonoBehaviour
     [SerializeField] private float movementSpeed;
 
     private float normalizedDirectionX = 0f;
+    private bool isStopped = false;
 
     private void Update()
     {
-        var targetPosition = transform.position + new Vector3(DirectionControl.x, DirectionControl.y, 0);
-        if (MovePosition != Vector2.zero)
+        if (isStopped) return;
+
+        var targetPositionX = transform.position.x + DirectionControl.x;
+        var targetPositionY = transform.position.y;
+        var targetVector = new Vector3(targetPositionX, targetPositionY, transform.position.z);
+
+        if (DirectionControl.x != 0)
         {
-            targetPosition = MovePosition;
+            LastDirectionX = DirectionControl.x;
         }
-        if (DirectionControl.x != 0) LastDirectionX = DirectionControl.x;
-        transform.position = Vector2.MoveTowards(transform.position, targetPosition, movementSpeed * Time.deltaTime);
-        if (transform.position == new Vector3(targetPosition.x, targetPosition.y, transform.position.z))
-        {
-            MovePosition = Vector2.zero;
-        }
+
+        transform.position = Vector2.MoveTowards(transform.position, targetVector, movementSpeed * Time.deltaTime);
     }
 
-    public void TeleportToPosition()
+    public void TeleportToPosition(Transform target)
     {
-        if (TeleportPosition != Vector2.zero)
-        {
-            transform.position = new Vector3(TeleportPosition.x, TeleportPosition.y, transform.position.z);
-        }
+        transform.position = target.position;
     }
 
-    public void Stop()
+    public void SetStopped(bool stopped)
     {
-        DirectionControl = Vector2.zero;
+        isStopped = stopped;
     }
 }

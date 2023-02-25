@@ -7,17 +7,10 @@ public class UITeleportButton : MonoBehaviour
     [SerializeField] private float fadeOutTime = 1f;
     [SerializeField] private float fadeInTime = 1.5f;
 
+    private ActionTeleport activeTeleport;
+
     public void StartTeleport()
     {
-        StartCoroutine(TeleportMoverAfterFade());
+        StartCoroutine(targetMover.ActiveTeleport.StartTeleport(targetMover));
     }
-
-    private IEnumerator TeleportMoverAfterFade()
-    {
-        var fader = FindObjectOfType<Fader>();
-        yield return fader.FadeOut(fadeOutTime);
-        targetMover.TeleportToPosition();
-        yield return fader.FadeIn(fadeInTime);
-    }
-
 }

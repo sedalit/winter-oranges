@@ -8,6 +8,8 @@ public class PlayerInputController : MonoBehaviour
     private Camera mainCamera;
     private bool movementEnabled = true;
 
+    public Mover PlayerMover => playerMover;
+
     private void Start()
     {
         mainCamera = Camera.main;
@@ -15,6 +17,7 @@ public class PlayerInputController : MonoBehaviour
 
     private void Update()
     {
+        if (InteractWithUI()) return;
         if (InteractWithComponent()) return;
         if (InteractWithMovement()) return;
     }
@@ -42,7 +45,7 @@ public class PlayerInputController : MonoBehaviour
         if (InteractWithUI()) return false;
 
         var inputX = 0;
-        playerMover.DirectionControl = new Vector2(inputX, playerMover.transform.position.y);
+
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             inputX = -1;
@@ -66,7 +69,7 @@ public class PlayerInputController : MonoBehaviour
         var target = GetWorldMousePosition();
         if (Input.GetMouseButton(0) && InteractWithUI() == false)
         {
-            playerMover.MovePosition = new Vector2(target.x, playerMover.transform.position.y);
+            //playerMover.MovePosition = new Vector2(target.x, playerMover.transform.position.y);
             playerMover.NormalizedDirectionX = target.normalized.x;
             return true;
         }
@@ -81,7 +84,7 @@ public class PlayerInputController : MonoBehaviour
 
     private bool InteractWithComponent()
     {
-        RaycastHit2D[] hits = Physics2D.RaycastAll(GetWorldMousePosition(), GetWorldMousePosition());
+        RaycastHit2D[] hits = Physics2D.RaycastAll(GetWorldMousePosition(), Vector2.down, 1f);
         foreach (var hit in hits)
         {
             IRaycastable[] raycastables = hit.transform.GetComponents<IRaycastable>();
