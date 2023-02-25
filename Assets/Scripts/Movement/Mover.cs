@@ -20,6 +20,8 @@ public class Mover : MonoBehaviour
         }
     }
 
+    public float LastDirectionX { get; private set; }
+
     [Range(1f, 10f)]
     [SerializeField] private float movementSpeed;
 
@@ -27,18 +29,16 @@ public class Mover : MonoBehaviour
 
     private void Update()
     {
-        var targetPosition = MovePosition;
-        if (DirectionControl != Vector2.zero)
+        var targetPosition = transform.position + new Vector3(DirectionControl.x, DirectionControl.y, 0);
+        if (MovePosition != Vector2.zero)
         {
-            targetPosition = transform.position + new Vector3(DirectionControl.x, DirectionControl.y, 0);
+            targetPosition = MovePosition;
         }
-        if (targetPosition != Vector2.zero)
+        if (DirectionControl.x != 0) LastDirectionX = DirectionControl.x;
+        transform.position = Vector2.MoveTowards(transform.position, targetPosition, movementSpeed * Time.deltaTime);
+        if (transform.position == new Vector3(targetPosition.x, targetPosition.y, transform.position.z))
         {
-            transform.position = Vector2.MoveTowards(transform.position, targetPosition, movementSpeed * Time.deltaTime);
-            if (transform.position == new Vector3(targetPosition.x, targetPosition.y, transform.position.z))
-            {
-                MovePosition = Vector2.zero;
-            }
+            MovePosition = Vector2.zero;
         }
     }
 
@@ -48,5 +48,10 @@ public class Mover : MonoBehaviour
         {
             transform.position = new Vector3(TeleportPosition.x, TeleportPosition.y, transform.position.z);
         }
+    }
+
+    public void Stop()
+    {
+        DirectionControl = Vector2.zero;
     }
 }

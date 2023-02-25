@@ -6,6 +6,7 @@ public class PlayerInputController : MonoBehaviour
     [SerializeField] private Mover playerMover;
 
     private Camera mainCamera;
+    private bool movementEnabled = true;
 
     private void Start()
     {
@@ -14,22 +15,47 @@ public class PlayerInputController : MonoBehaviour
 
     private void Update()
     {
+        if (InteractWithComponent()) return;
         if (InteractWithMovement()) return;
+    }
+
+    public void SetMovementEnabled(bool enabled)
+    {
+        movementEnabled = enabled;
+    }
+
+    public Vector3 GetWorldMousePosition()
+    {
+        return mainCamera.ScreenToWorldPoint(Input.mousePosition);
     }
 
     private bool InteractWithMovement()
     {
+        if (movementEnabled == false) return false;
         if (MoveWithKeyboard()) return true;
-        if (MoveWithMouse()) return true;
+        //if (MoveWithMouse()) return true;
         return false;
     }
 
     private bool MoveWithKeyboard()
     {
-        var inputX = Input.GetAxis("Horizontal");
+        if (InteractWithUI()) return false;
+
+        var inputX = 0;
+        playerMover.DirectionControl = new Vector2(inputX, playerMover.transform.position.y);
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            inputX = -1;
+        }
+        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            inputX = 1;
+        }
+        playerMover.DirectionControl = new Vector2(inputX, playerMover.transform.position.y);
+        
         if (inputX != 0)
         {
-            playerMover.DirectionControl = new Vector2(Mathf.Clamp(inputX, -1f, 1f), playerMover.transform.position.y);
+            playerMover.NormalizedDirectionX = inputX;
             return true;
         }
         return false;
@@ -37,8 +63,7 @@ public class PlayerInputController : MonoBehaviour
 
     private bool MoveWithMouse()
     {
-        var mousePos = Input.mousePosition;
-        var target = mainCamera.ScreenToWorldPoint(mousePos);
+        var target = GetWorldMousePosition();
         if (Input.GetMouseButton(0) && InteractWithUI() == false)
         {
             playerMover.MovePosition = new Vector2(target.x, playerMover.transform.position.y);
@@ -51,6 +76,23 @@ public class PlayerInputController : MonoBehaviour
             playerMover.DirectionControl = Vector2.zero;
         }
 
+        return false;
+    }
+
+    private bool InteractWithComponent()
+    {
+        RaycastHit2D[] hits = Physics2D.RaycastAll(GetWorldMousePosition(), GetWorldMousePosition());
+        foreach (var hit in hits)
+        {
+            IRaycastable[] raycastables = hit.transform.GetComponents<IRaycastable>();
+            foreach (var raycastable in raycastables)
+            {
+                if (raycastable.HandleRaycast(this))
+                {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 

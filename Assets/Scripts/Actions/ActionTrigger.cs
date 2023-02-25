@@ -6,14 +6,14 @@ public class ActionTrigger : MonoBehaviour
     public UnityEvent OnTriggerEvent;
     public UnityEvent OnTriggerExitEvent;
 
-    [SerializeField] private bool canInteractMoreOneTime = true;
+    [SerializeField] private bool deactivateAfterEnter = true;
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.root.CompareTag("Player"))
         {
             OnTriggerEvent?.Invoke();
-            if (!canInteractMoreOneTime)
+            if (deactivateAfterEnter)
             {
                 DeactivateTrigger();
             }

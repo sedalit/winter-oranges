@@ -9,7 +9,8 @@ public class UIMoveButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     public void OnPointerDown(PointerEventData eventData)
     {
         targetMover.DirectionControl = direction;
-        targetMover.NormalizedDirectionX = direction.normalized.x;
+        //targetMover.MovePosition = Vector2.zero;
+        //targetMover.NormalizedDirectionX = direction.normalized.x;
     }
 
     public void OnPointerUp(PointerEventData eventData)

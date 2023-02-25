@@ -64,6 +64,12 @@
     <Compile Include="Assets\Scripts\Core\Fader.cs" />
     <Compile Include="Assets\Scripts\Actions\ActionTrigger.cs" />
     <Compile Include="Assets\Scripts\Core\PlayerInputController.cs" />
+    <Compile Include="Assets\Scripts\Actions\IRaycastable.cs" />
+    <Compile Include="Assets\Scripts\Actions\ForWashMinigame\InteractableObject.cs" />
+    <Compile Include="Assets\Scripts\Actions\ForWashMinigame\ActionDestroyAfterCollision.cs" />
+    <Compile Include="Assets\Scripts\Actions\ForWashMinigame\BaseAction.cs" />
+    <Compile Include="Assets\Scripts\Actions\ForWashMinigame\InteractionEffect.cs" />
+    <Compile Include="Assets\Scripts\Actions\ForWashMinigame\ActionController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

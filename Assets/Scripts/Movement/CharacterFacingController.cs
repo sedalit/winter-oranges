@@ -15,8 +15,13 @@ public class CharacterFacingController : MonoBehaviour
         mover.DirectionChanged -= OnDirectionChanged;
     }
 
+    private void Update()
+    {
+        spriteRenderer.flipX = mover.LastDirectionX < 0;
+    }
+
     private void OnDirectionChanged(float lastDirection, float currentDirection)
     {
-        spriteRenderer.flipX = currentDirection < lastDirection;
+        //spriteRenderer.flipX = currentDirection < lastDirection;
     }
 }
